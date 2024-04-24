@@ -1,0 +1,616 @@
+<?php
+   
+
+    if (isset($_POST["submit"])){
+        
+        $l_name = $_POST['l_name'];
+        $f_name = $_POST['f_name'];
+        $m_name = $_POST['m_name'];
+        $email = $_POST['email'];
+        $p_number = $_POST['p_number'];
+        $t_number = $_POST['t_number'];
+        $r_pass = $_POST['r_pass'];
+        $c_pass = $_POST['c_pass'];
+        $h_number = $_POST['h_number'];
+        $h_street = $_POST['h_street'];
+        $r_barangay = $_POST['r_barangay'];
+        $r_municipality = $_POST['r_municipality'];
+        $bday = $_POST['bday'];
+        $nationality = $_POST['nationality'];
+        $status = $_POST['status'];
+        $r_age = $_POST['r_age'];
+        $gender = $_POST['gender'];
+        $voter = $_POST['voter'];
+        
+        $errors = array();
+
+        if (empty($l_name) OR empty($f_name) OR empty($m_name) OR empty($email) OR empty($p_number) OR empty($t_number) OR empty($r_pass) OR empty($h_number) OR empty($h_street) OR empty($r_barangay) OR empty($r_municipality) OR empty($bday) OR empty($nationality) OR empty($status) OR empty($r_age) OR empty($gender) OR empty($voter) ){
+            array_push($errors, "All fields are required");
+
+            $host = "localhost";
+            $dbUsername = "root";
+            $dbPassword = "";
+            $dbname = "barangay_eservices_db";
+
+            //create connection
+
+            $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
+
+            if (mysqli_connect_error()){
+                die('Connect Error('. mysqli_connect_errno().')'. mysqli_connect_error());
+            } else {
+                       
+                echo $f_name;
+            }}
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) ){
+            array_push($errors, "Email is not valid");
+        }
+
+        if (strlen($r_pass)<8){
+            array_push($errors, "Password must be atleast 8 characters long");
+        }
+
+        if ($r_pass!==$c_pass){
+            array_push($errors, "Email is not valid");
+        }
+
+        if (count($errors) ){
+            foreach ($errors as $error) {
+                echo "<div class='alert alert-danger'>$error</div>";
+            }
+        } 
+            else{
+                //we
+            }
+        
+    
+
+      
+
+        } 
+
+    
+?>
+
+include 'connect.php';
+        
+        $l_name = $_POST['l_name'];
+        $f_name = $_POST['f_name'];
+        $m_name = $_POST['m_name'];
+        $email = $_POST['email'];
+        $p_number = $_POST['p_number'];
+        $t_number = $_POST['t_number'];
+        $r_pass = $_POST['r_pass'];
+        $c_pass = $_POST['c_pass'];
+        $h_number = $_POST['h_number'];
+        $h_street = $_POST['h_street'];
+        $r_barangay = $_POST['r_barangay'];
+        $r_municipality = $_POST['r_municipality'];
+        $bday = $_POST['bday'];
+        $nationality = $_POST['nationality'];
+        $status = $_POST['status'];
+        $r_age = $_POST['r_age'];
+        $gender = $_POST['gender'];
+        $voter = $_POST['voter'];
+        
+        $l_name = mysqli_real_escape_string($conn, $_POST["l_name"]);
+                 $f_name = mysqli_real_escape_string($conn, $_POST["f_name"]);
+                 $m_name = mysqli_real_escape_string($conn, $_POST["m_name"]);
+                 $email = mysqli_real_escape_string($conn, $_POST["email"]);
+                 $p_number = mysqli_real_escape_string($conn, $_POST["p_number"]);
+                 $t_number = mysqli_real_escape_string($conn, $_POST["t_number"]);
+                 $r_pass = mysqli_real_escape_string($conn, $_POST["r_pass"]);
+                 $c_pass = mysqli_real_escape_string($conn, $_POST["c_pass"]);
+                 $h_number = mysqli_real_escape_string($conn, $_POST["h_number"]);
+                 $h_street = mysqli_real_escape_string($conn, $_POST["h_street"]);
+                 $barangay = mysqli_real_escape_string($conn, $_POST["barangay"]);
+                 $municipality = mysqli_real_escape_string($conn, $_POST["municipality"]);
+                 $bday = mysqli_real_escape_string($conn, $_POST["bday"]);
+                 $nationality = mysqli_real_escape_string($conn, $_POST["nationality"]);
+                 $c_status = mysqli_real_escape_string($conn, $_POST["c_status"]);
+                 $r_age = mysqli_real_escape_string($conn, $_POST["r_age"]);
+                 $gender = mysqli_real_escape_string($conn, $_POST["gender"]);
+                 $voter = mysqli_real_escape_string($conn, $_POST["voter"]);
+    
+     if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users_registration_tb WHERE email='{$email}'")) > 0){
+         echo "<script>alert('{$email} - This email is taken already.');</script>";
+     } else {
+         if ($r_pass === $c_pass){
+             $sql = "INSERT INTO users_registration_tb (l_name, f_name, m_name, email, p_number, t_number, r_pass, c_pass,
+                       bday, nationality, c_status, r_age)";
+             $sql = "INSERT INTO address_tb ( h_number, h_street, barangay, municipality)";
+
+             $result = mysqli_query($conn, $sql);
+
+             if ($result){
+                 header("Location: users_login.html");
+             } else {
+                 echo "<script>Error: ".$sql.mysqli_error($conn)."</script>";
+             }
+
+         } else{
+             echo "<script>alert('Password and Confirm Password does not match.');</script>";
+         }
+     }
+     
+     
+     }if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM registration_tb WHERE email='{$email}'")) > 0){
+                     echo "<script>alert('{$email} - This email is taken already.');</script>";
+                 } 
+
+     <!--usman
+
+      $sql="INSERT INTO address_tb(h_number, h_street, barangay, municipality)VALUES('$h_number', '$h_street', '$barangay', '$municipality')";
+                            $result=mysqli_query($conn,$sql)or die('Query two is failed' .mysqli_error($conn));
+                       
+                         
+                         if ($result==1){
+                            
+
+                            $sql2="INSERT INTO users_registration_tb(l_name, f_name, m_name, email, p_number, t_number, r_pass, bday, nationality, c_status, r_age, gender, voter)VALUES('$l_name', '$f_name', '$m_name', 'email', '$p_number', '$t_number', '$r_pass', '$bday', '$nationality', '$c_status', '$r_age', '$gender', '$voter')";
+
+                            $result2=mysqli_query($conn,$sql2)or die('Query one is failed' .mysqli_error($conn));
+                             
+
+                            if($result2){
+                                header("Location: user_login.html");
+                            } else{
+                                echo "error";
+                            }
+                         } 
+
+ -->
+
+ if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users_registration_tb WHERE email='{$email}'")) > 0){
+                     echo "<script>alert('{$email} - This email is taken already.');</script>";
+                 } else {
+                     if ($r_pass === $c_pass){
+                        $sql="INSERT INTO address_tb(h_number, h_street, barangay, municipality)VALUES('$h_number', '$h_street', '$barangay', '$municipality')";
+                        $result = mysqli_query($conn,$sql)or die('Query one is failed' .mysqli_error($conn));
+                        $result = mysqli_query($conn, $sql);
+
+                        $sql2="INSERT INTO users_registration_tb(l_name, f_name, m_name, email, p_number, t_number, r_pass, bday, nationality, c_status, r_age, gender, voter)VALUES('$l_name', '$f_name', '$m_name', 'email', '$p_number', '$t_number', '$r_pass', '$bday', '$nationality', '$c_status', '$r_age', '$gender', '$voter')";
+                        $result2 = mysqli_query($conn,$sql2)or die('Query one is failed' .mysqli_error($conn));
+                             
+                        
+                        $result2 = mysqli_query($conn, $sql2);
+
+                        if($result && $result2){
+                            header("Location: user_login.html");
+                        } else{
+                            echo ("Error caught");
+                        }
+                        
+                     } else{
+                         echo "<script>alert('Password and Confirm Password does not match.');</script>";
+                     }
+                 }
+
+
+                 <?php
+                 if (isset($_POST["submit"])) {
+
+                    include 'connect.php';
+                   
+                    
+                    $l_name = mysqli_real_escape_string($conn, $_POST["l_name"]);
+                    $f_name = mysqli_real_escape_string($conn, $_POST["f_name"]);
+                    $m_name = mysqli_real_escape_string($conn, $_POST["m_name"]);
+                    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+                    $p_number =$_POST["p_number"];
+                    $t_number =  $_POST["t_number"];
+                    $r_pass = mysqli_real_escape_string($conn, $_POST["r_pass"]);
+                    $c_pass = mysqli_real_escape_string($conn, $_POST["c_pass"]);
+                    $h_number =$_POST["h_number"];
+                    $h_street = mysqli_real_escape_string($conn, $_POST["h_street"]);
+                    $barangay = mysqli_real_escape_string($conn, $_POST["barangay"]);
+                    $municipality = mysqli_real_escape_string($conn, $_POST["municipality"]);
+                    $bday =  $_POST["bday"];
+                    $nationality = mysqli_real_escape_string($conn, $_POST["nationality"]);
+                    $c_status = mysqli_real_escape_string($conn, $_POST["c_status"]);
+                    $r_age = $_POST["r_age"];
+                    $gender = mysqli_real_escape_string($conn, $_POST["gender"]);
+                    $voter = mysqli_real_escape_string($conn, $_POST["voter"]);
+                  
+                    $passwordHash = password_hash($r_pass, PASSWORD_DEFAULT);
+                    
+                
+               
+                     if (strlen($r_pass)>8){
+                         echo "<script>alert('Password must be 8 characters long.'); </script> ";
+                     }
+
+                     if (strlen($p_number)!==10){
+                         echo "<script>alert('Phone number must be equal to 10 numbers.');</script>";
+                     }
+                    
+              else { 
+                     if ($r_pass === $c_pass){
+                      
+                        
+                        $sql="INSERT INTO address_tb(h_number, h_street, barangay, municipality)VALUES('$h_number', '$h_street', '$barangay', '$municipality')";
+                        $result = mysqli_query($conn,$sql)or die('Query one is failed' .mysqli_error($conn));
+
+                        $id = mysqli_insert_id($conn);
+
+                        if($result == 1){
+                            echo "";
+                        }
+
+                        $sql2="INSERT INTO registration_tb(l_name, f_name, m_name, email, p_number, t_number, r_pass, bday, nationality, c_status, r_age, gender, voter)VALUES('$l_name', '$f_name', '$m_name', 'email', '$p_number', '$t_number', '$r_pass', '$bday', '$nationality', '$c_status', '$r_age', '$gender', '$voter')";
+                        $result2 = mysqli_query($conn,$sql2)or die('Query two is failed' .mysqli_error($conn));
+
+
+
+
+                     
+                        
+
+                        
+
+                        if($result2){
+                            header("Location: user_login.html");
+                        } else{
+                            echo ("Error caught");
+                        }
+                     }  else{
+                        echo "<script>alert('Password and Confirm Password does not match.');</script>";
+                    } 
+                }
+                 
+                 
+                 
+                 
+         }
+
+            ?>  
+
+<!--
+    <?php
+
+     
+//if (isset($_POST["submit"])) {
+
+    //database connection
+    include 'connect.php';   
+
+    //this code will take HTML Form data from User
+    $l_name = mysqli_real_escape_string($conn, $_POST["l_name"]);
+    $f_name = mysqli_real_escape_string($conn, $_POST["f_name"]);
+    $m_name = mysqli_real_escape_string($conn, $_POST["m_name"]);
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $p_number =$_POST["p_number"];
+    $t_number =  $_POST["t_number"];
+    $r_pass = mysqli_real_escape_string($conn, $_POST["r_pass"]);
+    $c_pass = mysqli_real_escape_string($conn, $_POST["c_pass"]);
+    $h_number =$_POST["h_number"];
+    $h_street = mysqli_real_escape_string($conn, $_POST["h_street"]);
+    $barangay = mysqli_real_escape_string($conn, $_POST["barangay"]);
+    $municipality = mysqli_real_escape_string($conn, $_POST["municipality"]);
+    $bday =  $_POST["bday"];
+    $bplace = mysqli_real_escape_string($conn, $_POST["bplace"]);
+    $nationality = mysqli_real_escape_string($conn, $_POST["nationality"]);
+    $c_status = mysqli_real_escape_string($conn, $_POST["c_status"]);
+    $r_age = $_POST["r_age"];
+    $gender = mysqli_real_escape_string($conn, $_POST["gender"]);
+    $voter = mysqli_real_escape_string($conn, $_POST["voter"]);
+
+
+    //PHP form validation PHP Code
+    if ($r_pass !== $c_pass){
+        $passError = "<script>alert('Password does not match');</script>";
+       
+
+    } if ($p_number !== 10){
+        $passError = "<script>alert('Phone number is not equal to 10 characters');</script>";
+
+    } else{
+
+        //Checking if theres an existing email in the database
+
+        $query = "SELECT users_id FROM users_registration_tb WHERE email = '$email'";
+        $emResult = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($emResult) > 0){
+            $error .= "<p> You email has taken already!</p>";
+        } else{
+            //Password encryption or Password Hashing
+        $hashedPassword = password_hash($r_pass, PASSWORD_DEFAULT); 
+       
+        $sql="INSERT INTO address_tb(h_number, h_street, barangay, municipality)VALUES('$h_number', '$h_street', '$barangay', '$municipality')";
+        $result = mysqli_query($conn,$sql)or die('Query one is failed' .mysqli_error($conn));
+
+   
+       
+        if($result){
+            
+            $sql2="INSERT INTO users_registration_tb(l_name, f_name, m_name, email, p_number, t_number, r_pass, bday, bplace, nationality, c_status, r_age, gender, voter)VALUES('$l_name', '$f_name', '$m_name', '$email', '$p_number', '$t_number', '$r_pass', '$bday', '$bplace', '$nationality', '$c_status', '$r_age', '$gender', '$voter')";
+            $result2 = mysqli_query($conn,$sql2)or die('Query two is failed' .mysqli_error($conn));
+
+
+        }   
+        
+        $otp = mt_rand(1111, 9999); //this will create 4 digits otp
+        
+        if($result2){
+            $sql3 = mysqli_query($conn, "SELECT * from users_registration_tb WHERE email = '$email'");
+
+            if (mysqli_num_rows($sql3)>0){
+                $row = mysqli_fetch_assoc($sql3); //this is where fetching data happens
+              
+                $_SESSION['email'] =$row['email'];
+                $_SESSION['otp'] =$row['otp'];
+            }
+        }
+
+     if ($otp){
+            $receiver = $email;
+            $subject = "From: $f_name $l_name <$email>";
+            $body = "Name "." $f_name $l_name \n Email " . " $email \n " . "$otp";
+            $sender = "From: venarocenar73@gmail.com";
+
+            if (mail($receiver, $subject, $body, $sender)){
+                echo "success";
+                header ("Location: verify_account.html");   
+            } else{
+                echo "Email Problem!" . mysqli_error($conn);
+            }
+        } else {
+            echo "OTP Sending Failed Try Again";
+        }
+            //mail function end
+        } 
+
+
+
+        } 
+        
+
+
+     
+
+ //   }
+         
+   //here
+
+ 
+ <?php
+    
+session_start();
+
+    if(isset($_POST["save"])){
+
+       $email = $_POST["email"];
+       $password = $_POST["r_pass"];
+       require_once("connect.php");
+
+        $sql = "SELECT * FROM registration_tb WHERE email = '$email'";
+        $result =mysqli_query($conn, $sql);
+        $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+        if ($user){
+            if (password_verify($password,$user["r_pass"])){
+                header("Location: landing_page.php");
+                die();
+            }
+        }else{
+                echo "<script>alert('Email does not match');</script>";
+        } 
+       
+    } else{
+        echo "<script>alert('Email does not match');</script>";
+}
+
+
+    ?>
+
+
+
+ 
+
+
+
+           
+                 
+                  
+                    
+                  
+                    
+
+                    
+
+
+        ?>  
+
+-->
+
+<!--
+<?php
+
+     
+if (isset($_POST["submit"])) {
+    
+
+
+   session_start();
+   $username = "";
+   $email = "";
+   $errors = [];
+
+   //database connection
+   include 'connect.php';   
+
+   //this code will take HTML Form data from User
+   $l_name = mysqli_real_escape_string($conn, $_POST["l_name"]);
+   $f_name = mysqli_real_escape_string($conn, $_POST["f_name"]);
+   $m_name = mysqli_real_escape_string($conn, $_POST["m_name"]);
+   $email =  $_POST["email"];
+   $p_number =$_POST["p_number"];
+   $t_number =  $_POST["t_number"];
+   $r_pass =  $_POST["r_pass"];
+   $c_pass =  $_POST["c_pass"];
+   $h_number =$_POST["h_number"];
+   $h_street = mysqli_real_escape_string($conn, $_POST["h_street"]);
+   $barangay = mysqli_real_escape_string($conn, $_POST["barangay"]);
+   $municipality = mysqli_real_escape_string($conn, $_POST["municipality"]);
+   $bday =  $_POST["bday"];
+   $bplace = mysqli_real_escape_string($conn, $_POST["bplace"]);
+   $nationality = mysqli_real_escape_string($conn, $_POST["nationality"]);
+   $c_status = mysqli_real_escape_string($conn, $_POST["c_status"]);
+   $r_age = $_POST["r_age"];
+   $gender = mysqli_real_escape_string($conn, $_POST["gender"]);
+   $voter = mysqli_real_escape_string($conn, $_POST["voter"]);
+
+   $passwordHash = password_hash($_POST['r_pass'], PASSWORD_DEFAULT); //encrypt password
+  
+   //PHP form validation PHP Code
+   if ($r_pass !== $c_pass){
+       echo "<script>alert('Password does not match');</script>";
+      
+
+   } else{
+     $password =  password_hash($r_pass, PASSWORD_DEFAULT);
+   }
+
+    if ($p_number > 10 && $p_number < 10){
+       echo "<script>alert('Phone number is not equal to 10 characters');</script>";
+
+   } 
+
+   
+      else{
+
+       $email = $_POST['email'];
+       $token = bin2hex(random_bytes(50)); // generate unique token
+       $password = password_hash($_POST['r_pass'], PASSWORD_DEFAULT);
+
+       // Check if email already exists
+       $sql = "SELECT * FROM users_registration_tb WHERE email='$email' LIMIT 1";
+       $result = mysqli_query($conn, $sql);
+
+       if (mysqli_num_rows($result) > 0) {
+           $errors['email'] = "Email already exists";
+       }
+
+       if (count($errors) === 0){
+           $query = "INSERT INTO users_registration_tb SET email=?, token=?, r_pass=?";
+           $stmt = $conn-> prepare($query);
+           $stmt->bind_param('sss', $email, $token, $r_pass);
+           $result = $stmt->execute();
+
+           if ($result){
+               $user_id = $stmt->users_id;
+               $stmt->close();
+
+                 // TO DO: send verification email to user
+               sendVerificationEmail($email, $token);
+
+                   $_SESSION['id'] = $users_id;
+                   $_SESSION['email'] = $email;
+                   $_SESSION['verified'] = false;
+                   $_SESSION['message'] = 'You are logged in!';
+                   $_SESSION['type'] = 'alert-success';
+                   header('location: user_login.html');
+           } else{
+               $_SESSION['error_msg'] = "Database error: Could not register user";
+           }
+       }
+   else{
+
+ 
+
+       $sql="INSERT INTO address_tb(h_number, h_street, barangay, municipality)VALUES('$h_number', '$h_street', '$barangay', '$municipality')";
+       $result = mysqli_query($conn,$sql)or die('Query one is failed' .mysqli_error($conn));
+
+  
+      
+       if($result){
+           
+           $sql2="INSERT INTO users_registration_tb(l_name, f_name, m_name, email, p_number, t_number, r_pass, bday, bplace, nationality, c_status, r_age, gender, voter)VALUES('$l_name', '$f_name', '$m_name', '$email', '$p_number', '$t_number', '$r_pass', '$bday', '$bplace', '$nationality', '$c_status', '$r_age', '$gender', '$voter')";
+           $result2 = mysqli_query($conn,$sql2)or die('Query two is failed' .mysqli_error($conn));
+
+       }    if($result2){
+           header("Location: user_login.html");
+       } else{
+           echo ("Error caught");
+       }
+    } 
+
+
+       }   
+
+   
+
+   //LOGIN
+   
+   if (isset($_POST['log-in'])){
+       if (empty($_POST['email'])) {
+           $errors['email'] = 'Username or email required';
+       }
+       if (empty($_POST['password'])) {
+           $errors['password'] = 'Password required';
+       }
+   
+            $username = $_POST['username'];
+           $password = $_POST['password'];    
+                   
+       if (count($errors) === 0) {
+           $query = "SELECT * FROM users_registration_tb WHERE username=? OR email=? LIMIT 1";
+           $stmt = $conn->prepare($query);
+           $stmt->bind_param('ss', $username, $password);
+       }
+
+       if ($stmt ->execute()){
+           $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+
+            if (password_verify($password, $user['password'])) { // if password matches
+               $stmt->close();
+
+               $_SESSION['id'] = $user['id'];
+               $_SESSION['username'] = $user['username'];
+               $_SESSION['email'] = $user['email'];
+               $_SESSION['verified'] = $user['verified'];
+               $_SESSION['message'] = 'You are logged in!';
+               $_SESSION['type'] = 'alert-success';
+               header('location: index.php');
+               exit(0);
+           } else { // if password does not match
+               $errors['login_fail'] = "Wrong username / password";
+           }
+
+
+       } else {
+           $_SESSION['message'] = "Database error. Login failed!";
+           $_SESSION['type'] = "alert-danger";
+       }
+       }
+                   
+
+                   
+   }
+
+       ?>  
+
+
+    -->
+
+
+    <!-- if($error_email = '') {
+            $user_activation_code = md5(rand());
+            $user_otp = rand(100000, 999999);
+
+            $data = array(
+                ':email' => $email,
+                ':password' => $password,
+                ':user_activation_code' => $user_activation_code,
+                ':user_email_status' => 'not verified',
+                ':user_otp' => $user_otp,
+            );
+       
+
+
+
+
+            required pattern="[a-zA-Z'-'\s]*

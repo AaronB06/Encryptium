@@ -1,0 +1,4 @@
+{"name":"website-finals","version":"1.0.0","description":"",
+"main":"js_script.js","scripts":{"build":"npx tailwindcss -i ./src/index.css -o ./public/style.css --watch"},
+"keywords":[],"author":"","license":"ISC","devDependencies":{"tailwindcss":"^3.4.1"},"dependencies":
+{"firebase":"^10.9.0","sweetalert2":"^11.6.13"}}
